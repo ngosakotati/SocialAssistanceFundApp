@@ -30,7 +30,7 @@ Open **Windows Features** and ensure the following are enabled:
 ## ⚙️ Configuration
 
 ### 1. Update Connection Strings
-Edit the `appsettings.json` file in the root of your project:
+Edit the `appsettings.json` file in the root of your project (Although I recommend the name of the server on the machine):
 
 ```json
 "ConnectionStrings": {
@@ -38,28 +38,35 @@ Edit the `appsettings.json` file in the root of your project:
 }
 ```
 
-### 🔐 If Using SQL Authentication
-
-If your SQL Server instance uses SQL authentication instead of Windows authentication, update the connection string accordingly:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=MyAppDb;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True;"
-}
-```
-
-> ✅ **Note**: Replace `sa` and `yourStrong(!)Password` with your actual SQL Server login credentials.
-
 ---
 
 ## 🚀 Publish and Host with IIS
 
 ### 1. Publish the App
-Use Visual Studio or the `dotnet` CLI to publish:
+## 🖥️ GUI-Based Publishing Instructions
 
-```bash
-dotnet publish -c Release -o ./publish
-```
+Follow these steps to publish the ASP.NET Core application using the Visual Studio GUI:
+
+### 1. Build the Project
+Open your solution in Visual Studio and make sure it builds without any errors.
+
+### 2. Publish via GUI
+- Right-click on the project in **Solution Explorer** and select **Publish**.
+- Click **New Profile**.
+- Select **Folder** and click **Next**.
+- Choose a target folder (e.g., `C:\PublishOutput`) and click **Finish**.
+- Click **Publish** to generate the published output.
+
+### 3. Copy to IIS Site Folder
+- Navigate to the output folder (e.g., `C:\PublishOutput`).
+- Copy all contents of this folder to your IIS site’s physical path, typically something like:  
+  `C:\inetpub\wwwroot\YourSite`.
+
+### 4. Assign Correct Permissions
+- Ensure that the **IIS Application Pool Identity** (e.g., `IIS APPPOOL\YourAppPoolName`) has **Read** and **Execute** permissions on your published site folder.
+
+> ✅ **Tip**: You can set permissions by right-clicking the folder, selecting **Properties > Security > Edit**, and adding the appropriate user.
+
 
 ### 2. Create Site in IIS
 - Open **IIS Manager**
@@ -76,15 +83,13 @@ Ensure that the IIS App Pool identity (e.g., `IIS AppPool\DefaultAppPool`) has r
 
 ## 🧱 Apply EF Core Migrations
 
-If using **Code First**, run the following to apply database schema:
+If using **Code First**, run the following to apply database schema in the package manager console:
 
 ```bash
-dotnet ef database update
+Update-Database
 ```
 
 Ensure that the **DefaultConnection** string is correctly pointing to your SQL Server.
-
-> 📝 You may also need to install EF CLI tools: `dotnet tool install --global dotnet-ef`
 
 ---
 
