@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SocialAssistanceFundApp.Models;
 using SocialAssistanceFundApp.Models.AddressInfo;
+using SocialAssistanceFundApp.Models.ApplicantInfo;
+using SocialAssistanceFundApp.Models.ApplicationInfo;
 
 namespace SocialAssistanceFundApp.Data
 {

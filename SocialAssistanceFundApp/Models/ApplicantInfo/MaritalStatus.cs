@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SocialAssistanceFundApp.Models
+namespace SocialAssistanceFundApp.Models.ApplicantInfo
 {
     public class MaritalStatus
     {

@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SocialAssistanceFundApp.Models.ApplicantInfo;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SocialAssistanceFundApp.Models
+namespace SocialAssistanceFundApp.Models.ApplicationInfo
 {
     public class Application
     {

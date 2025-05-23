@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SocialAssistanceFundApp.Models
+namespace SocialAssistanceFundApp.Models.ApplicantInfo
 {
-    public class SocialAssistanceProgram
+    public class Sex
     {
         [Key]
         public int Id { get; set; }

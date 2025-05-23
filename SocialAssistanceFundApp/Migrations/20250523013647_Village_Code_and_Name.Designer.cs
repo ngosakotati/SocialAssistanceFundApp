@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialAssistanceFundApp.Data;
 
@@ -11,9 +12,11 @@ using SocialAssistanceFundApp.Data;
 namespace SocialAssistanceFundApp.Migrations
 {
     [DbContext(typeof(SAFDbContext))]
-    partial class SAFDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250523013647_Village_Code_and_Name")]
+    partial class Village_Code_and_Name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

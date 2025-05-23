@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialAssistanceFundApp.Models.AddressInfo
 {
-    public class Village
+    public class Village : GenericAddress
     {
         [Key]
         public int Id { get; set; }

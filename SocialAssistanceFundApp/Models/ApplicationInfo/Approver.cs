@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace SocialAssistanceFundApp.Models
+namespace SocialAssistanceFundApp.Models.ApplicationInfo
 {
     public class Approver : IdentityUser
     {
