@@ -2,12 +2,12 @@
 
 namespace SocialAssistanceFundApp.Models.AddressInfo
 {
-    public class Country : GenericAddress
+    public class County : GenericAddress
     {
         [Key]
         public int Id { get; set; }
 
         // Navigation properties
-        public virtual List<SubCountry>? SubCountries { get; set; } = [];
+        public virtual List<SubCounty>? SubCounties { get; set; } = [];
     }
 }

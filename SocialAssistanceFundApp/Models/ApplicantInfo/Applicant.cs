@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SocialAssistanceFundApp.Models.AddressInfo;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialAssistanceFundApp.Models.ApplicantInfo
@@ -9,6 +10,8 @@ namespace SocialAssistanceFundApp.Models.ApplicantInfo
         public int Id { get; set; }
 
         public int SexId { get; set; }
+
+        public int VillageId { get; set; }
 
         public int MaritalStatusId { get; set; }
 
@@ -42,6 +45,9 @@ namespace SocialAssistanceFundApp.Models.ApplicantInfo
 
         [ForeignKey("MaritalStatusId")]
         public virtual MaritalStatus MaritalStatus { get; set; }
+
+        [ForeignKey("VillageId")]
+        public virtual Village Village { get; set; }
         public virtual List<TelephoneContact>? TelephoneContacts { get; set; } = [];
     }
 }

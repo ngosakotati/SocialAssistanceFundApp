@@ -1,0 +1,66 @@
+﻿
+@model List<ApplicationViewModel>
+
+@{
+    ViewData["Title"] = "Applications List";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Applications</h2>
+
+
+    <a asp-action="Create" class="btn btn-primary mb-3">
+        <i class="bi bi-plus-circle"></i> Create New Application
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Program</th>
+                    <th>Application Date</th>
+                    <th>Full Name</th>
+                    <th>Sex</th>
+                    <th>Marital Status</th>
+                    <th>Age</th>
+                    <th>Identity Card Number</th>
+                    <th>Village</th>
+                    <th>Telephone Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var application in Model)
+                    {
+                        <tr>
+                            <td>@application.SocialAssistanceProgram</td>
+                            <td>@application.ApplicationDate?.ToString("dd/MM/yyyy")</td>
+                            <td>@application.Applicant?.FullName</td>
+                            <td>@application.Applicant?.Sex</td>
+                            <td>@application.Applicant?.MaritalStatus</td>
+                            <td>@application.Applicant?.Age</td>
+                            <td>@application.Applicant?.IdNumber</td>
+                            <td>@application.Applicant?.Village</td>
+                            <td>@application.Applicant?.TelePhoneContact</td>
+
+                            <td>
+                                <!-- Edit action link -->
+                                <a asp-action="EditApplication" asp-route-id="@application.Id" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="12" class="text-center text-muted">No applications found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

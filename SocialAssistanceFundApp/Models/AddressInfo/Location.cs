@@ -8,12 +8,12 @@ namespace SocialAssistanceFundApp.Models.AddressInfo
         [Key]
         public int Id { get; set; }
 
-        public int SubCountryId { get; set; }
+        public int SubCountyId { get; set; }
 
         // Navigation properties
 
-        [ForeignKey("SubCountryId")]
-        public virtual SubCountry SubCountry { get; set; }
+        [ForeignKey("SubCountyId")]
+        public virtual SubCounty SubCounty { get; set; }
 
         public virtual List<SubLocation>? SubLocations { get; set; } = [];
     }

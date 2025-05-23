@@ -45,7 +45,7 @@ namespace SocialAssistanceFundApp.Data
 
         public DbSet<Approver> Approvers { get; set; }
 
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<County> Counties { get; set; }
 
         public DbSet<Location> Locations { get; set; }
 
@@ -55,7 +55,7 @@ namespace SocialAssistanceFundApp.Data
 
         public DbSet<SocialAssistanceProgram> SocialAssistancePrograms { get; set; }
 
-        public DbSet<SubCountry> SubCountries { get; set; }
+        public DbSet<SubCounty> SubCounties { get; set; }
 
         public DbSet<SubLocation> SubLocations { get; set; }
 

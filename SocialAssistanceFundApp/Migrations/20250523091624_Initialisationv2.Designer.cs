@@ -12,8 +12,8 @@ using SocialAssistanceFundApp.Data;
 namespace SocialAssistanceFundApp.Migrations
 {
     [DbContext(typeof(SAFDbContext))]
-    [Migration("20250522094505_Initialisation")]
-    partial class Initialisation
+    [Migration("20250523091624_Initialisationv2")]
+    partial class Initialisationv2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace SocialAssistanceFundApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Country", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.County", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace SocialAssistanceFundApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Counties");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Location", b =>
@@ -62,17 +62,17 @@ namespace SocialAssistanceFundApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubCountryId")
+                    b.Property<int>("SubCountyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubCountryId");
+                    b.HasIndex("SubCountyId");
 
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCountry", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCounty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,7 +84,7 @@ namespace SocialAssistanceFundApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int>("CountyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -93,9 +93,9 @@ namespace SocialAssistanceFundApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CountyId");
 
-                    b.ToTable("SubCountries");
+                    b.ToTable("SubCounties");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubLocation", b =>
@@ -132,6 +132,14 @@ namespace SocialAssistanceFundApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SubLocationId")
                         .HasColumnType("int");
 
@@ -142,7 +150,7 @@ namespace SocialAssistanceFundApp.Migrations
                     b.ToTable("Villages");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Applicant", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicantInfo.Applicant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,16 +194,116 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Property<string>("SignatureUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("VillageId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MaritalStatusId");
 
                     b.HasIndex("SexId");
 
+                    b.HasIndex("VillageId");
+
                     b.ToTable("Applicants");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Application", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicantInfo.MaritalStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MaritalStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Status = "Single"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = "Married"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Status = "Separated"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Status = "Divorced"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Status = "Widowed"
+                        });
+                });
+
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicantInfo.Sex", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sexes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Male"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Female"
+                        });
+                });
+
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicantInfo.TelephoneContact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TelephoneNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.ToTable("TelephoneContacts");
+                });
+
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicationInfo.Application", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -224,7 +332,7 @@ namespace SocialAssistanceFundApp.Migrations
                     b.ToTable("Applications");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Approval", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicationInfo.Approval", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -248,7 +356,7 @@ namespace SocialAssistanceFundApp.Migrations
                     b.ToTable("Approvals");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Approver", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicationInfo.Approver", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -308,80 +416,7 @@ namespace SocialAssistanceFundApp.Migrations
                     b.ToTable("Approvers");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.MaritalStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MaritalStatuses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Status = "Single"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Status = "Married"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Status = "Separated"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Status = "Divorced"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Status = "Widowed"
-                        });
-                });
-
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Sex", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sexes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Male"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Female"
-                        });
-                });
-
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.SocialAssistanceProgram", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicationInfo.SocialAssistanceProgram", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -420,48 +455,26 @@ namespace SocialAssistanceFundApp.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.TelephoneContact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ApplicantId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TelephoneNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId");
-
-                    b.ToTable("TelephoneContacts");
-                });
-
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Location", b =>
                 {
-                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.SubCountry", "SubCountry")
+                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.SubCounty", "SubCounty")
                         .WithMany("Locations")
-                        .HasForeignKey("SubCountryId")
+                        .HasForeignKey("SubCountyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SubCountry");
+                    b.Navigation("SubCounty");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCountry", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCounty", b =>
                 {
-                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.Country", "Country")
-                        .WithMany("SubCountries")
-                        .HasForeignKey("CountryId")
+                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.County", "County")
+                        .WithMany("SubCounties")
+                        .HasForeignKey("CountyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Country");
+                    b.Navigation("County");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubLocation", b =>
@@ -486,34 +499,53 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Navigation("SubLocation");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Applicant", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicantInfo.Applicant", b =>
                 {
-                    b.HasOne("SocialAssistanceFundApp.Models.MaritalStatus", "MaritalStatus")
+                    b.HasOne("SocialAssistanceFundApp.Models.ApplicantInfo.MaritalStatus", "MaritalStatus")
                         .WithMany()
                         .HasForeignKey("MaritalStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SocialAssistanceFundApp.Models.Sex", "Sex")
+                    b.HasOne("SocialAssistanceFundApp.Models.ApplicantInfo.Sex", "Sex")
                         .WithMany()
                         .HasForeignKey("SexId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.Village", "Village")
+                        .WithMany()
+                        .HasForeignKey("VillageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("MaritalStatus");
 
                     b.Navigation("Sex");
+
+                    b.Navigation("Village");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Application", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicantInfo.TelephoneContact", b =>
                 {
-                    b.HasOne("SocialAssistanceFundApp.Models.Applicant", "Applicant")
+                    b.HasOne("SocialAssistanceFundApp.Models.ApplicantInfo.Applicant", "Applicant")
+                        .WithMany("TelephoneContacts")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicationInfo.Application", b =>
+                {
+                    b.HasOne("SocialAssistanceFundApp.Models.ApplicantInfo.Applicant", "Applicant")
                         .WithMany()
                         .HasForeignKey("ApplicantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SocialAssistanceFundApp.Models.SocialAssistanceProgram", "SocialAssistanceProgram")
+                    b.HasOne("SocialAssistanceFundApp.Models.ApplicationInfo.SocialAssistanceProgram", "SocialAssistanceProgram")
                         .WithMany()
                         .HasForeignKey("SocialAssistanceProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -524,15 +556,15 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Navigation("SocialAssistanceProgram");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Approval", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicationInfo.Approval", b =>
                 {
-                    b.HasOne("SocialAssistanceFundApp.Models.Application", "Application")
+                    b.HasOne("SocialAssistanceFundApp.Models.ApplicationInfo.Application", "Application")
                         .WithMany()
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SocialAssistanceFundApp.Models.Approver", "Approver")
+                    b.HasOne("SocialAssistanceFundApp.Models.ApplicationInfo.Approver", "Approver")
                         .WithMany()
                         .HasForeignKey("ApproverId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -543,20 +575,9 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Navigation("Approver");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.TelephoneContact", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.County", b =>
                 {
-                    b.HasOne("SocialAssistanceFundApp.Models.Applicant", "Applicant")
-                        .WithMany("TelephoneContacts")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Applicant");
-                });
-
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Country", b =>
-                {
-                    b.Navigation("SubCountries");
+                    b.Navigation("SubCounties");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Location", b =>
@@ -564,7 +585,7 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Navigation("SubLocations");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCountry", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCounty", b =>
                 {
                     b.Navigation("Locations");
                 });
@@ -574,7 +595,7 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Navigation("Villages");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.Applicant", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicantInfo.Applicant", b =>
                 {
                     b.Navigation("TelephoneContacts");
                 });

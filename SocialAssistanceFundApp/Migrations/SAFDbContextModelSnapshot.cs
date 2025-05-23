@@ -22,7 +22,7 @@ namespace SocialAssistanceFundApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Country", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.County", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace SocialAssistanceFundApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Counties");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Location", b =>
@@ -59,17 +59,17 @@ namespace SocialAssistanceFundApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubCountryId")
+                    b.Property<int>("SubCountyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubCountryId");
+                    b.HasIndex("SubCountyId");
 
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCountry", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCounty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,7 +81,7 @@ namespace SocialAssistanceFundApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int>("CountyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -90,9 +90,9 @@ namespace SocialAssistanceFundApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CountyId");
 
-                    b.ToTable("SubCountries");
+                    b.ToTable("SubCounties");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubLocation", b =>
@@ -191,11 +191,16 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Property<string>("SignatureUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("VillageId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MaritalStatusId");
 
                     b.HasIndex("SexId");
+
+                    b.HasIndex("VillageId");
 
                     b.ToTable("Applicants");
                 });
@@ -449,24 +454,24 @@ namespace SocialAssistanceFundApp.Migrations
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Location", b =>
                 {
-                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.SubCountry", "SubCountry")
+                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.SubCounty", "SubCounty")
                         .WithMany("Locations")
-                        .HasForeignKey("SubCountryId")
+                        .HasForeignKey("SubCountyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SubCountry");
+                    b.Navigation("SubCounty");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCountry", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCounty", b =>
                 {
-                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.Country", "Country")
-                        .WithMany("SubCountries")
-                        .HasForeignKey("CountryId")
+                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.County", "County")
+                        .WithMany("SubCounties")
+                        .HasForeignKey("CountyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Country");
+                    b.Navigation("County");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubLocation", b =>
@@ -505,9 +510,17 @@ namespace SocialAssistanceFundApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SocialAssistanceFundApp.Models.AddressInfo.Village", "Village")
+                        .WithMany()
+                        .HasForeignKey("VillageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("MaritalStatus");
 
                     b.Navigation("Sex");
+
+                    b.Navigation("Village");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.ApplicantInfo.TelephoneContact", b =>
@@ -559,9 +572,9 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Navigation("Approver");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Country", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.County", b =>
                 {
-                    b.Navigation("SubCountries");
+                    b.Navigation("SubCounties");
                 });
 
             modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.Location", b =>
@@ -569,7 +582,7 @@ namespace SocialAssistanceFundApp.Migrations
                     b.Navigation("SubLocations");
                 });
 
-            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCountry", b =>
+            modelBuilder.Entity("SocialAssistanceFundApp.Models.AddressInfo.SubCounty", b =>
                 {
                     b.Navigation("Locations");
                 });

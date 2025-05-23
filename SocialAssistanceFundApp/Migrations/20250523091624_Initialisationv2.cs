@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SocialAssistanceFundApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialisation : Migration
+    public partial class Initialisationv2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,7 +41,7 @@ namespace SocialAssistanceFundApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Countries",
+                name: "Counties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -51,7 +51,7 @@ namespace SocialAssistanceFundApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Countries", x => x.Id);
+                    table.PrimaryKey("PK_Counties", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,22 +94,85 @@ namespace SocialAssistanceFundApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubCountries",
+                name: "SubCounties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    CountyId = table.Column<int>(type: "int", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubCountries", x => x.Id);
+                    table.PrimaryKey("PK_SubCounties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubCountries_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalTable: "Countries",
+                        name: "FK_SubCounties_Counties_CountyId",
+                        column: x => x.CountyId,
+                        principalTable: "Counties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SubCountyId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Locations_SubCounties_SubCountyId",
+                        column: x => x.SubCountyId,
+                        principalTable: "SubCounties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubLocations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubLocations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubLocations_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Villages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SubLocationId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Villages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Villages_SubLocations_SubLocationId",
+                        column: x => x.SubLocationId,
+                        principalTable: "SubLocations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -121,6 +184,7 @@ namespace SocialAssistanceFundApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SexId = table.Column<int>(type: "int", nullable: false),
+                    VillageId = table.Column<int>(type: "int", nullable: false),
                     MaritalStatusId = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -146,25 +210,10 @@ namespace SocialAssistanceFundApp.Migrations
                         principalTable: "Sexes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Locations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SubCountryId = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Locations_SubCountries_SubCountryId",
-                        column: x => x.SubCountryId,
-                        principalTable: "SubCountries",
+                        name: "FK_Applicants_Villages_VillageId",
+                        column: x => x.VillageId,
+                        principalTable: "Villages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -218,27 +267,6 @@ namespace SocialAssistanceFundApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubLocations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationId = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubLocations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SubLocations_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Approvals",
                 columns: table => new
                 {
@@ -260,25 +288,6 @@ namespace SocialAssistanceFundApp.Migrations
                         name: "FK_Approvals_Approvers_ApproverId",
                         column: x => x.ApproverId,
                         principalTable: "Approvers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Villages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SubLocationId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Villages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Villages_SubLocations_SubLocationId",
-                        column: x => x.SubLocationId,
-                        principalTable: "SubLocations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -326,6 +335,11 @@ namespace SocialAssistanceFundApp.Migrations
                 column: "SexId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Applicants_VillageId",
+                table: "Applicants",
+                column: "VillageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Applications_ApplicantId",
                 table: "Applications",
                 column: "ApplicantId");
@@ -346,14 +360,14 @@ namespace SocialAssistanceFundApp.Migrations
                 column: "ApproverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Locations_SubCountryId",
+                name: "IX_Locations_SubCountyId",
                 table: "Locations",
-                column: "SubCountryId");
+                column: "SubCountyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubCountries_CountryId",
-                table: "SubCountries",
-                column: "CountryId");
+                name: "IX_SubCounties_CountyId",
+                table: "SubCounties",
+                column: "CountyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubLocations_LocationId",
@@ -381,16 +395,10 @@ namespace SocialAssistanceFundApp.Migrations
                 name: "TelephoneContacts");
 
             migrationBuilder.DropTable(
-                name: "Villages");
-
-            migrationBuilder.DropTable(
                 name: "Applications");
 
             migrationBuilder.DropTable(
                 name: "Approvers");
-
-            migrationBuilder.DropTable(
-                name: "SubLocations");
 
             migrationBuilder.DropTable(
                 name: "Applicants");
@@ -399,19 +407,25 @@ namespace SocialAssistanceFundApp.Migrations
                 name: "SocialAssistancePrograms");
 
             migrationBuilder.DropTable(
-                name: "Locations");
-
-            migrationBuilder.DropTable(
                 name: "MaritalStatuses");
 
             migrationBuilder.DropTable(
                 name: "Sexes");
 
             migrationBuilder.DropTable(
-                name: "SubCountries");
+                name: "Villages");
 
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "SubLocations");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "SubCounties");
+
+            migrationBuilder.DropTable(
+                name: "Counties");
         }
     }
 }
